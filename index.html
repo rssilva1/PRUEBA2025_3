@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>ARCSA CONTROL</title>
+<meta charset="utf-8" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="msapplication-tap-highlight" content="no" />
+<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+
+<!--CSS Default Jquery Mobile
+<link href="jquery-mobile/jquery.mobile.theme-1.4.5.min.css" rel="stylesheet" type="text/css"/>
+<link href="jquery-mobile/jquery.mobile.flatui.css" rel="stylesheet" type="text/css"/>
+
+ -->
+<link href="font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="jquery-mobile/jquery.mobile.flatui.css" rel="stylesheet" type="text/css"/>
+<link href="jquery-mobile/jquery.mobile.icons-1.4.5.min.css" rel="stylesheet" type="text/css"/>
+<!--CSS Creados-->
+<link href="css/add-stilo.css" rel="stylesheet" type="text/css"/>
+<!--Script Default-->
+<!--<script src="js/jquery-1.12.4.min.js" type="text/javascript"></script>-->
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.4.0.js"></script>
+<script src="js/jquery.validate.min.js" type="text/javascript"></script>
+<script src="jquery-mobile/jquery.mobile-1.4.5.min.js" type="text/javascript"></script>
+<script src="jquery-mobile/additional-methods.min.js" type="text/javascript"></script>
+<script src="js/index.js" type="text/javascript"></script>
+<script type="text/javascript" src="cordova.js"></script>
+</head>
+<body>
+<!-- PAGINA CONTROL ARCSA -->
+<div data-role="page" id="pgMain" data-title="ARCSA CONTROL" data-display="reveal">
+	<script>
+	$("#pgMain").on('pageshow',function(){ 
+			//irfunction2="QR";	
+	});
+	
+	$("#pgMain").on('pagecreate',function(){ 
+			$("#btnBuscarRns" ).click(function() {	
+				if($('#frmBuscarRns').valid()){
+					get_control();
+				}	
+			});
+			
+	});
+	</script>
+	<div data-role="header" data-position="fixed"  data-theme="f">
+		<!--<a href="#pgMenupropi" data-role="button" data-icon="flat-arrow-left" data-iconpos="notext" rel="external">Atras</a>-->
+		<h1><!--<img src="img/codigo-qr.svg" class="align-left" />-->ARCSA CONTROL</h1>
+	</div>
+	<div data-role="content" data-theme="f">
+		<form id="frmBuscarRns" class="ui form">
+			<label for="txtBuscarRns"></label>
+			<div  class="ui-grid-a" align="center">
+				<div class="ui-block-a" style="width: 70% !important;">
+					<input  id="txtBuscarRns" name="txtBuscarRns" type="search" placeholder="INGRESA NÚMERO DE RS-NS-NSO " required />
+				</div>
+				<div class="ui-block-b" style="width: 30% !important;">
+					<!--<button type="button" id="btnBuscarRns" data-theme="g" class="ui-mini"> Buscar</button>-->
+					<button type="button" class="ui-btn ui-corner-all ui-btn-inline" id="btnBuscarRns" style=" padding: 8px !important;">BUSCAR</button>
+				</div>
+			</div>
+		</form>
+		<hr>
+		<h4>Datos del Producto</h4>
+		<div style="overflow-x:auto;">
+			<table border="1" data-role="table" id="tblRns" data-mode="columntoggle:none" class="ui-responsive">
+				<thead>
+					<tr>
+						<th>Registro</th>
+						<th>Fecha</th>
+						<th>Zona</th>
+						<th>Periodo</th>
+						<th>Estado</th>
+					</tr>
+				</thead>
+				<tbody id="tbody_rns">
+
+
+				</tbody>
+			</table>
+		</div>
+
+		<div id="div_insp" style="display: none;">
+			<hr>
+			<h4>Datos Inspección</h4>
+			<div style="overflow-x:auto;">
+				<table border="1" data-role="table" id="tbl_insp" data-mode="columntoggle:none" class="ui-responsive">
+					<thead>
+						<tr>
+							<th>Registro</th>
+							<th>Producto</th>
+							<th>Representante</th>
+							<th>Zona</th>
+							<th>Informe</th>
+							<th>Estado</th>
+						</tr>
+					</thead>
+					<tbody id="tbody_insp">
+
+
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<span id="span_pf_reg_san" style="display: none"></span>
+	</div>
+</div>
+
+<!-- PAGINA CONTROL INSERT -->
+<div data-role="page" data-dialog="true" id="pgInsp" data-title="INSERTA CONTROL" data-display="reveal">
+	<script>
+	$("#pgInsp").on('pagecreate',function(){ 
+			$("#btn_registrar" ).click(function() {	
+				if($('#cbo_zona').val()!=0){
+					save_control();
+				}else{
+					iconProgress('d','', true, true, 5000,'<div style="text-align:center;"><img src="img/cerrar.png" /> <span style="color:red">Seleccione una zona</span></div>');
+				};	
+			});
+			
+	});
+	</script>
+	<div data-role="header" data-position="fixed"  data-theme="f">
+		<!--<a href="#pgMenupropi" data-role="button" data-icon="flat-arrow-left" data-iconpos="notext" rel="external">Atras</a>-->
+		<h1><!--<img src="img/codigo-qr.svg" class="align-left" />-->INSERTA CONTROL</h1>
+	</div>
+	<div data-role="content" data-theme="f">
+		<form id="frm_registrar">
+			<div style="padding:10px 20px;">
+				<h3>Ingresa los datos solicitados</h3>
+				<label for="cbo_zona" class="select">Seleccione zona:</label>
+				<select name="cbo_zona" id="cbo_zona">
+					<option value="0">Seleccione...</option>
+					<option value="1">Zona 1</option>
+					<option value="2">Zona 2</option>
+					<option value="3">Zona 3</option>
+					<option value="4">Zona 4</option>
+					<option value="5">Zona 5</option>
+					<option value="6">Zona 6</option>
+					<option value="7">Zona 7</option>
+					<option value="8">Zona 8</option>
+					<option value="9">Zona 9</option>
+				</select>
+				<!--<label for="pw" class="ui-hidden-accessible">Password:</label>
+				<input type="password" name="pass" id="pw" value="" placeholder="password" data-theme="a">-->
+				<button type="button" id="btn_registrar" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check">Registrar</button>
+			</div>
+		</form>
+	</div>
+</div>
+
+
+
+
+
+
+</body>
+</html>
